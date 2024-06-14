@@ -1,5 +1,6 @@
 package com.bewell.api.entity;
 import com.bewell.api.entity.enums.Gender;
+import com.bewell.api.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,5 +37,5 @@ public class User {
     private Gender gender;
     @Column(name ="urole")
     @Enumerated (EnumType.STRING)
-    private Gender role;
+    private Role role;
 }

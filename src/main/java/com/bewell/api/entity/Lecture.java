@@ -38,7 +38,7 @@ public class Lecture {
     @ManyToMany
     //İlişkiye gireceği tabloyu belirtmemiz gerekiyor, bu durumda foreign key tablosu
     @JoinTable(name ="user_lectures",
-    joinColumns = {@JoinColumn(name="lectures_id", referencedColumnName = "id")},
+    joinColumns = {@JoinColumn(name="lecture_id", referencedColumnName = "id")},
     inverseJoinColumns = {@JoinColumn(name="user_id", referencedColumnName = "id")})
     private List<User> student;
 

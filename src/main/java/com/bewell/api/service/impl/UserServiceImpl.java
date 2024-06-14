@@ -5,31 +5,31 @@ import com.bewell.api.entity.User;
 import com.bewell.api.entity.enums.Role;
 import com.bewell.api.repository.IUserRepository;
 import com.bewell.api.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-public class UserService implements IUserService {
+@Service
+public class UserServiceImpl implements IUserService {
 
-    private IUserRepository userRepository;
+    private final IUserRepository userRepository;
 
-    public UserService(IUserRepository userRepository) {
+    @Autowired
+    public UserServiceImpl(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
-
 
     @Override
     public User save(User user) {
         if (user.getId() == null) {
-            if (user.getIdentityNo() == null || user.getIdentityNo().length() != 11 )
-            {
+            if (user.getIdentityNo() == null || user.getIdentityNo().length() != 11) {
                 throw new GeneralException("Invalid Identity no!");
             }
-            if(userRepository.existsByIdentityNo(user.getIdentityNo()))
-            {
+            if (userRepository.existsByIdentityNo(user.getIdentityNo())) {
                 throw new GeneralException("Identity no already exists");
             }
         }
@@ -37,13 +37,15 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getById(int id)
-    {
+    public User getById(int id) {
+        return userRepository.findById(id).orElseThrow(() -> new GeneralException("User not found"));
+        /*
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
             throw new GeneralException("User not found");
         }
         return user.get();
+         */
     }
 
     @Override
@@ -66,7 +68,7 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> getUsersByRole(Role role) {
-        userRepository.findAllByRole(role);
+        return userRepository.findAllByRole(role);
     }
 
     @Override
@@ -74,6 +76,6 @@ public class UserService implements IUserService {
         if (ids.isEmpty()) {
             return getUsersByRole(Role.STUDENT);
         }
-        return userRepository.findAllByRoleAndIdIsNotIn(Role.STUDENT,ids);
+        return userRepository.findAllByRoleAndIdIsNotIn(Role.STUDENT, ids);
     }
 }

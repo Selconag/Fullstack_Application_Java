@@ -16,8 +16,8 @@ import java.util.List;
 public class UserController {
     private final IUserService userService;
 
-    public UserController(IUserService userService) {
-        this.userService = userService;
+    public UserController(IUserService _userService) {
+        this.userService = _userService;
     }
 
     @GetMapping
